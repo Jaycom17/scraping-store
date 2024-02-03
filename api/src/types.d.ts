@@ -1,0 +1,1 @@
+export type sortString = "price" | "price-desc" | "stars";
