@@ -1,7 +1,6 @@
 import { Product } from '../models/product.model';
 import { fixText } from "./utils/text";
 import { requestUrl } from "./utils/request";
-import puppeteer from "puppeteer";
 
 export const getMercadoLibreProductList = async (
   product: string
@@ -35,43 +34,9 @@ export const getMercadoLibreProductList = async (
       .find(".ui-search-result__content-columns")
       .text()
       .includes("Envío gratis");
-    const stars = parseFloat(product.find(".ui-search-reviews__rating-number").text()) || 0;
+    const stars = parseFloat(product.find(".ui-search-reviews__rating-number").text()) || -1;
     products.push({ title, price, image, link, freeShipping, stars });
   });
 
   return products;
-};
-
-export const getAlkostoProductList = async (
-  product: string
-): Promise<Product[]> => {
-
-  const url = `https://www.alkosto.com/search/?text=${fixText(product, "%2520")}`;
-
-  const browser = await puppeteer.launch({headless: false});
-
-  const page = await browser.newPage();
-
-  await page.goto(url);
-
-  const products: Product[] = [];
-
-  await page.waitForSelector('div.product__list__wrapper');
-
-  await page.evaluate(() => {
-    const element = document.querySelector(
-      '.product__list__wrapper'
-    );
-
-    console.log(element);
-
-    const productList = element?.getElementsByTagName("li");
-
-    console.log(productList);
-  });
-
-  await browser.close();
-
-  return products;
-  
 };

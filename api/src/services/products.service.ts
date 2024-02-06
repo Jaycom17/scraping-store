@@ -1,8 +1,8 @@
-import { getMercadoLibreProductList, getAlkostoProductList } from "./scraping.service"
+import { getMercadoLibreProductList } from "./scraping.service"
 import { sortProducts } from "./utils/sortProducts";
 
 export const getProductList = async (productName: string) => {
-    return sortProducts(await getAlkostoProductList(productName), 'price');
+    return sortProducts(await getMercadoLibreProductList(productName), 'price');
 }
 
 export const getProductListByPriceDesc = async (productName: string) => {
